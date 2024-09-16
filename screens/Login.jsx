@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+
 import { useState } from "react";
 import authChecker from "../utils/authChecker";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,8 +45,19 @@ const Login = () => {
       setValidationText(validate);
     }
     if (validate === "true") {
-      setValidationText("");
-      
+      console.log("Hello");
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user, "true");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+        });
     }
   }
   return (
